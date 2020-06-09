@@ -63,7 +63,7 @@ git clone -b warrior git://git.openembedded.org/openembedded-core
 Download this UP Board BSP layer for Warrior:
 
 ```
-git clone -b warrior https://github.com/emutex/meta-up-board
+git clone -b warrior-dev https://github.com/emutex/meta-up-board
 ```
 
 
