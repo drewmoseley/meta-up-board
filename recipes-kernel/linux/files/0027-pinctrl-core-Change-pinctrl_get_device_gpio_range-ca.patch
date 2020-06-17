@@ -1,0 +1,39 @@
+From 1335318bb4036cc33943e4d350b69acb9a17a51f Mon Sep 17 00:00:00 2001
+From: Drew Moseley <drew.moseley@northern.tech>
+Date: Fri, 12 Jun 2020 09:21:17 -0400
+Subject: [PATCH] pinctrl:core: Change pinctrl_get_device_gpio_range call to
+ gpio_to_desc.
+
+This function was removed in 'allow multiple pin controllers for a GPIO' but the call to
+it was added back in a later commit
+
+Signed-off-by: Drew Moseley <drew.moseley@northern.tech>
+---
+ drivers/pinctrl/core.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/pinctrl/core.c b/drivers/pinctrl/core.c
+index a5dbef0eaa6a..a8c029615a22 100644
+--- a/drivers/pinctrl/core.c
++++ b/drivers/pinctrl/core.c
+@@ -706,13 +706,15 @@ bool pinctrl_gpio_can_use_line(unsigned gpio)
+ 	struct pinctrl_gpio_range *range;
+ 	bool result;
+ 	int pin;
++	struct gpio_desc *desc;
+ 
+ 	/*
+-	 * Try to obtain GPIO range, if it fails
++	 * Try to obtain GPIO descriptor. if it fails
+ 	 * we're probably dealing with GPIO driver
+ 	 * without a backing pin controller - bail out.
+ 	 */
+-	if (pinctrl_get_device_gpio_range(gpio, &pctldev, &range))
++	desc = gpio_to_desc(gpio);
++	if (!desc)
+ 		return true;
+ 
+ 	mutex_lock(&pctldev->mutex);
+-- 
+2.17.1
+

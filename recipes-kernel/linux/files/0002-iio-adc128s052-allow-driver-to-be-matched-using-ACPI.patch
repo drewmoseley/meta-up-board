@@ -12,18 +12,18 @@ Signed-off-by: Dan O'Donovan <dan@emutex.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/iio/adc/ti-adc128s052.c b/drivers/iio/adc/ti-adc128s052.c
-index 89dfbd3..1a51278 100644
+index 1e5a936b5b6a..cfba1dba9061 100644
 --- a/drivers/iio/adc/ti-adc128s052.c
 +++ b/drivers/iio/adc/ti-adc128s052.c
-@@ -203,7 +203,7 @@ MODULE_DEVICE_TABLE(spi, adc128_id);
+@@ -222,7 +222,7 @@ MODULE_DEVICE_TABLE(acpi, adc128_acpi_match);
  static struct spi_driver adc128_driver = {
  	.driver = {
  		.name = "adc128s052",
 -		.of_match_table = of_match_ptr(adc128_of_match),
 +		.of_match_table = adc128_of_match,
+ 		.acpi_match_table = ACPI_PTR(adc128_acpi_match),
  	},
  	.probe = adc128_probe,
- 	.remove = adc128_remove,
 -- 
-2.7.4
+2.17.1
 
