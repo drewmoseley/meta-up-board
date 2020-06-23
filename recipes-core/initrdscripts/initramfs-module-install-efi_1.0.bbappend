@@ -1,5 +1,6 @@
-SUMMARY = "Append included for initramfs recipe to include acpi-tables.cpio for install version image."
+FILESEXTRAPATHS_prepend_up-board := "${THISDIR}/files:"
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
-
-PR := "${PR}.1"
+do_install_append_up-board() {
+    install -d ${D}/init.d
+    install -m 0755 ${WORKDIR}/init-install-efi-up-board.sh ${D}/init.d/install-efi.sh
+}
