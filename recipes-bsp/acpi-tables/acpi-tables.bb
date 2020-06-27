@@ -10,6 +10,8 @@ LIC_FILES_CHKSUM = "file://${COREBASE}/meta/files/common-licenses/BSD;md5=377548
 
 DEPENDS = "intel-microcode acpica-native"
 
+COMPATIBLE_HOST = "(i.86|x86_64).*-linux"
+
 inherit deploy
 
 ACPI_TABLES ?= ""
