@@ -1,0 +1,43 @@
+From f244f0e5d359c8f9b7b2fd6e1fd77c9ab726ddce Mon Sep 17 00:00:00 2001
+From: Drew Moseley <drew.moseley@northern.tech>
+Date: Mon, 7 Sep 2020 10:52:58 -0400
+Subject: [PATCH] pinctrl: allow multiple pin controllers for a GPIO
+
+The patch 0003-pinctrl-allow-multiple-pin-controllers-for-a-GPIO.patch
+removes the function pinctrl_get_device_gpio_range.
+
+Commit 472a61e777fe78cdcb6cb6f25efee0ae9f629aca adds a call to that
+function.  Adapt it to the new mechanism
+
+Signed-off-by: Drew Moseley <drew.moseley@northern.tech>
+---
+ drivers/pinctrl/core.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/pinctrl/core.c b/drivers/pinctrl/core.c
+index a5dbef0eaa6a..9f2f6ed8ee20 100644
+--- a/drivers/pinctrl/core.c
++++ b/drivers/pinctrl/core.c
+@@ -704,15 +704,17 @@ bool pinctrl_gpio_can_use_line(unsigned gpio)
+ {
+ 	struct pinctrl_dev *pctldev;
+ 	struct pinctrl_gpio_range *range;
++	struct gpio_desc *desc;
+ 	bool result;
+ 	int pin;
+ 
+ 	/*
+-	 * Try to obtain GPIO range, if it fails
++	 * Try to convert to a descriptor. If it fails
+ 	 * we're probably dealing with GPIO driver
+ 	 * without a backing pin controller - bail out.
+ 	 */
+-	if (pinctrl_get_device_gpio_range(gpio, &pctldev, &range))
++	desc = gpio_to_desc(gpio);
++	if (!desc)
+ 		return true;
+ 
+ 	mutex_lock(&pctldev->mutex);
+-- 
+2.28.0
+
